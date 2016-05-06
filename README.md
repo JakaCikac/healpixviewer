@@ -24,11 +24,11 @@ Building requires:
 If you are on a Mac with MacPorts (https://trac.macports.org), you
 can get all of the dependencies with:
 
-    sudo port install glfw glm healpix-c
+    sudo port install glfw glm healpix-c glew
 
 If, you are on a Mac with Homebrew (Recommended) (http://brew.sh), you can get the dependencies with: 
 
-	brew install healpix cfitsio glfw3 glm pkgconfig
+	brew install healpix cfitsio glfw3 glm pkgconfig glew
 
 To build
 --------
