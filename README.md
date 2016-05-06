@@ -21,15 +21,30 @@ Building requires:
 * CFitsio <http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html>
 * a C++ compiler, `make`, and `pkgconfig`
 
-If, like me, you are on a Mac with MacPorts (https://trac.macports.org), you
+If you are on a Mac with MacPorts (https://trac.macports.org), you
 can get all of the dependencies with:
 
     sudo port install glfw glm healpix-c
 
+If, you are on a Mac with Homebrew (Recommended) (http://brew.sh), you can get the dependencies with: 
+
+	brew install healpix cfitsio glfw3 glm pkgconfig
+
 To build
 --------
 
-Just run `make`.
+Create a new directory:
+
+	mkdir build
+
+Move to the directory:
+
+	cd build
+
+Run Cmake:
+
+
+	cmake ..
 
 Usage
 -----
@@ -38,7 +53,7 @@ Just pass the name of a (possibly gzip-compressed) FITS file, like this:
 
     $ healpixviewer INPUT.fits[.gz]
 
-Here's an example sky map from a paper I am working on:
+Here's an example sky map:
 
     $ wget http://ligo.org/science/first2years/2015/compare/18951/bayestar.fits.gz
     $ ./healpixviewer bayestar.fits.gz
