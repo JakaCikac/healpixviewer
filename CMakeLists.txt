@@ -35,6 +35,13 @@ if(NOT GLFW_FOUND)
     message(ERROR " GLFW3 not found!")
 endif(NOT GLFW_FOUND)
 
+# FIND GLEW
+find_package(GLEW REQUIRED)
+if (GLEW_FOUND)
+    include_directories(${GLEW_INCLUDE_DIRS})
+    link_libraries(${GLEW_LIBRARIES})
+endif()
+
 # EXECUTABLE
 ADD_EXECUTABLE(healpixviewer src/healpixviewer.cpp)
 target_link_libraries(healpixviewer ${OPENGL_gl_LIBRARY} ${HEALPIX_LIBRARIES} ${GLFW_LIBRARIES})
