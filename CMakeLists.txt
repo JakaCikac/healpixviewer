@@ -12,8 +12,8 @@ endif(NOT PKGCONFIG_FOUND)
 
 # FIND OPENGL
 find_package(OpenGL REQUIRED)
-include_directories(${OpenGL_INCLUDE_DIRS})
-link_directories(${OpenGL_LIBRARY_DIRS})
+include_directories(${OPENGL_INCLUDE_DIR})
+link_directories(${OPENGL_gl_LIBRARY})
 add_definitions(${OpenGL_DEFINITIONS})
 if(NOT OPENGL_FOUND)
     message(ERROR " OPENGL not found!")
@@ -29,7 +29,6 @@ endif(NOT HEALPIX_FOUND)
 
 # FIND GLFW3
 pkg_search_module(GLFW REQUIRED glfw3)
-message("glfw: ${GLFW_CFLAGS_OTHER}")
 include_directories(${GLFW_INCLUDE_DIRS})
 link_directories(${GLFW_LIBRARY_DIRS})
 if(NOT GLFW_FOUND)
@@ -37,5 +36,5 @@ if(NOT GLFW_FOUND)
 endif(NOT GLFW_FOUND)
 
 # EXECUTABLE
-SET(SOURCE_FILES src/healpixviewer.cpp)
-ADD_EXECUTABLE(healpixviewer ${SOURCE_FILES})
+ADD_EXECUTABLE(healpixviewer src/healpixviewer.cpp)
+target_link_libraries(healpixviewer ${OPENGL_gl_LIBRARY} ${HEALPIX_LIBRARIES} ${GLFW_LIBRARIES})
