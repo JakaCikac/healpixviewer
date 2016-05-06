@@ -1,0 +1,95 @@
+SIMPLE  =                    T / Written by IDL:  Thu Dec 11 13:07:57 2014      
+BITPIX  =                    8 /Dummy primary header created by MWRFITS         
+NAXIS   =                    0 /No data is associated with this header          
+EXTEND  =                    T /Extensions may (will!) be present               
+CHECKSUM= 'NAdRN1dQN8dQN8dQ'   / HDU checksum created 2014-12-11T12:07:58       
+END                                                                             
+-------------------------
+XTENSION= 'BINTABLE'           /Written by IDL:  Thu Dec 11 13:07:57 2014       
+BITPIX  =                    8 /                                                
+NAXIS   =                    2 /Binary table                                    
+NAXIS1  =                   36 /Number of bytes per row                         
+NAXIS2  =               786432 /Number of rows                                  
+PCOUNT  =                    0 /Random parameter count                          
+GCOUNT  =                    1 /Group count                                     
+TFIELDS =                    9 /Number of columns                               
+COMMENT                                                                         
+COMMENT  *** End of mandatory fields ***                                        
+COMMENT                                                                         
+EXTNAME = 'COMP-MAP-dust'      /Extension name                                  
+EXTVER  =                    1 /Extension version                               
+DATE    = '2014-12-11'         /Creation date                                   
+COMMENT                                                                         
+COMMENT  *** Column names ***                                                   
+COMMENT                                                                         
+TTYPE1  = 'I_ML    '           / Intensity map                                  
+TTYPE2  = 'I_MEAN  '           / Mean Intensity                                 
+TTYPE3  = 'I_RMS   '           / Standard Deviation                             
+TTYPE4  = 'TEMP_ML '           / Temperature map                                
+TTYPE5  = 'TEMP_MEAN '         / Mean temperature                               
+TTYPE6  = 'TEMP_RMS '          / Standard Deviation                             
+TTYPE7  = 'BETA_ML '           / Beta map                                       
+TTYPE8  = 'BETA_MEAN '         / Mean Beta                                      
+TTYPE9  = 'BETA_RMS '          / Standard Deviation                             
+COMMENT                                                                         
+COMMENT  *** Column formats ***                                                 
+COMMENT                                                                         
+TFORM1  = 'E       '           /                                                
+TFORM2  = 'E       '           /                                                
+TFORM3  = 'E       '           /                                                
+TFORM4  = 'E       '           /                                                
+TFORM5  = 'E       '           /                                                
+TFORM6  = 'E       '           /                                                
+TFORM7  = 'E       '           /                                                
+TFORM8  = 'E       '           /                                                
+TFORM9  = 'E       '           /                                                
+COMMENT                                                                         
+COMMENT *** Column units ***                                                    
+COMMENT                                                                         
+TUNIT1  = 'uK_RJ   '           /                                                
+TUNIT2  = 'uK_RJ   '           /                                                
+TUNIT3  = 'uK_RJ   '           /                                                
+TUNIT4  = 'K       '           /                                                
+TUNIT5  = 'K       '           /                                                
+TUNIT6  = 'K       '           /                                                
+TUNIT7  = 'NONE    '           /                                                
+TUNIT8  = 'NONE    '           /                                                
+TUNIT9  = 'NONE    '           /                                                
+COMMENT                                                                         
+COMMENT *** Planck params ***                                                   
+COMMENT                                                                         
+PIXTYPE = 'HEALPIX '           / HEALPIX pixelisation                           
+ORDERING= 'NESTED  '           / Pixel ordering scheme, either RING or NESTED   
+COORDSYS= 'GALACTIC'           /                                                
+POLCCONV= 'COSMO   '           / Coord. convention for polarization (COSMO/IAU) 
+POLAR   = 'False   '           / Polarization included (True/False)             
+NSIDE   =                  256 / Resolution parameter for HEALPIX               
+FIRSTPIX=                    0 / First pixel # (0 based)                        
+LASTPIX =               786431 / Last pixel # (0 based)                         
+INDXSCHM= 'IMPLICIT'           / Indexing; IMPLICIT or EXPLICIT                 
+BAD_DATA=        -1.63750E+030 / Sentinel value given to bad pixel              
+METHOD  = 'COMMANDER'          / Component Separation method                    
+AST-COMP= 'DUST    '           / Astrophysical component name                   
+FWHM    =              60.0000 / FWHM used, arcmin                              
+NU_REF  = '545.0 GHz'          / Reference Frequency                            
+PROCVER = 'DX11D   '           / Product version                                
+FILENAME= 'COM_CompMap_dust-commander_0256_R2.00.fits' / FITS filename          
+COMMENT                                                                         
+COMMENT     Original Inputs                                                     
+COMMENT ------------------------------------------------------------            
+COMMENT commander_dx11d2_32band_n0256_60arc_v1_dust.fits                        
+COMMENT commander_dx11d2_32band_n256_60arc_v001_dust_mean.fits                  
+COMMENT commander_dx11d2_32band_n256_60arc_v001_dust_stddev.fits                
+COMMENT commander_dx11d2_32band_n0256_60arc_v1_dust_Td.fits                     
+COMMENT commander_dx11d2_32band_n256_60arc_v001_dust_Td_mean.fits               
+COMMENT commander_dx11d2_32band_n256_60arc_v001_dust_Td_stddev.fits             
+COMMENT commander_dx11d2_32band_n0256_60arc_v1_dust_beta.fits                   
+COMMENT commander_dx11d2_32band_n256_60arc_v001_dust_beta_mean.fits             
+COMMENT commander_dx11d2_32band_n256_60arc_v001_dust_beta_stddev.fits           
+COMMENT ------------------------------------------------------------            
+COMMENT For further details see Planck Explanatory Supplement at:               
+COMMENT  http://www.cosmos.esa.int/wikiSI/planckpla                             
+COMMENT ------------------------------------------------------------            
+DATASUM = '3887874394'         / data unit checksum created 2014-12-11T12:07:58 
+CHECKSUM= 'BkFoCjElBjElBjEl'   / HDU checksum created 2014-12-11T12:07:58       
+END                                                                             
