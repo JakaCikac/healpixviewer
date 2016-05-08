@@ -78,37 +78,10 @@ static void error(int error, const char *description)
     fprintf(stderr, "GLFW error %d: %s\n", error, description);
 }
 
+// convert to NEST if neccessary
+float * convert2NEST(float * hp, char ordering, hpint64 npix, long nside) {
 
-
-
-int main(int argc, char **argv)
-{
-    /* Validate input */
-    if (argc != 2)
-    {
-        puts("usage: healpixviewer INPUT.fits[.gz]");
-        exit(EXIT_FAILURE);
-    }
-
-    const char *fitsfilename = argv[1];
-    long nside;
-    char coordsys[80];
-    char ordering[80];
-
-    /* Read sky map from FITS file */
-    float *hp = read_healpix_map(
-        fitsfilename, &nside, coordsys, ordering);
-    if (!hp)
-    {
-        fputs("error: read_healpix_map\n", stderr);
-        exit(EXIT_FAILURE);
-    }
-
-    /* Determine total number of pixels */
-    hpint64 npix = nside2npix64(nside);
-
-    /* Convert to NEST ordering if necessary */
-    if (ordering[0] == 'R') /* Ring indexing */
+    if (ordering == 'R') /* Ring indexing */
     {
         float *new_hp = (float *) malloc(npix * sizeof(*new_hp));
         if (!new_hp)
@@ -125,6 +98,83 @@ int main(int argc, char **argv)
         }
         free(hp);
         hp = new_hp;
+    }
+
+    return hp;
+}
+
+
+int main(int argc, char **argv)
+{
+    // Initialise filename string.
+    string fitsfilename{ };
+    // Determines if the map is displayed in linear or logarithmic scale.
+    bool logarithmic_scale{false};
+
+    /* Validate input */
+    if (argc < 2)
+    {
+        // basic usage
+        cout << "Usage: healpixviewer INPUT.fits[.gz] [optional]" << endl;
+        // optional parameters
+        cout << "Optional parameters: " << endl;
+        cout << "   --l  Enable logarithimic scale map display." << endl;
+
+        exit(1);
+
+    } else {
+
+        // Read in the filename. (The map).
+        fitsfilename = argv[1];
+
+        if (argc > 2) // if there are optional parameters
+
+            for (int i = 3; i <= argc; i++) {
+
+                // Check for optional parameters.
+                if (string(argv[i-1]) == "--l") {
+                    // We know the next argument *should* be the filename:
+                    logarithmic_scale = true;
+
+                } else if (string(argv[i-1]) == "-d") {
+                    // Do nothing yet.
+                } else {
+                    cout << "Not enough or invalid arguments, please try again.\n";
+                    exit(1);
+                    
+                }
+            }
+    }
+
+    long nside;
+    char coordsys[80];
+    char ordering[80];
+
+    /* Read sky map from FITS file */
+    float *hp = read_healpix_map(
+        fitsfilename.c_str(), &nside, coordsys, ordering);
+    if (!hp)
+    {
+        fputs("error: read_healpix_map\n", stderr);
+        exit(EXIT_FAILURE);
+    }
+
+    /* Determine total number of pixels */
+    hpint64 npix = nside2npix64(nside);
+
+    /* Convert to NEST ordering if necessary */
+    hp = convert2NEST(hp, ordering[0], npix, nside);
+
+
+    /* Convert to logarithmic scale if given a switch. */
+    float *log_hp = (float *) malloc(npix * sizeof(*log_hp));
+
+    if (logarithmic_scale) {
+        for (int i = 0; i < npix; i++) {
+            log_hp[i] = log(hp[i]);
+        }
+        free(hp);
+        hp = log_hp;
     }
 
     /* Rearrange into base tiles */
@@ -170,7 +220,6 @@ int main(int argc, char **argv)
     glfwSetErrorCallback(error);
     if (!glfwInit())
         exit(EXIT_FAILURE);
-
 
     /* Necessary to get modern OpenGL context on Mavericks */
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -337,7 +386,6 @@ int main(int argc, char **argv)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
-
 
     do  // Frame loop.
     {
