@@ -103,6 +103,20 @@ float * convert2NEST(float * hp, char ordering, hpint64 npix, long nside) {
     return hp;
 }
 
+float * convert2LOG(float *hp, hpint64 npix) {
+
+    float *log_hp = (float *) malloc(npix * sizeof(*log_hp));
+        for (int i = 0; i < npix; i++) {
+            log_hp[i] = log(hp[i]);
+        }
+
+    free(hp);
+    hp = log_hp;
+
+    return hp;
+
+}
+
 
 int main(int argc, char **argv)
 {
@@ -141,7 +155,7 @@ int main(int argc, char **argv)
                 } else {
                     cout << "Not enough or invalid arguments, please try again.\n";
                     exit(1);
-                    
+
                 }
             }
     }
@@ -165,17 +179,9 @@ int main(int argc, char **argv)
     /* Convert to NEST ordering if necessary */
     hp = convert2NEST(hp, ordering[0], npix, nside);
 
-
-    /* Convert to logarithmic scale if given a switch. */
-    float *log_hp = (float *) malloc(npix * sizeof(*log_hp));
-
-    if (logarithmic_scale) {
-        for (int i = 0; i < npix; i++) {
-            log_hp[i] = log(hp[i]);
-        }
-        free(hp);
-        hp = log_hp;
-    }
+    /* Convert to Logarithmic scale data if given --l option. */
+    if (logarithmic_scale)
+        hp = convert2LOG(hp, npix);
 
     /* Rearrange into base tiles */
     {
@@ -208,9 +214,11 @@ int main(int argc, char **argv)
     {
         hpint64 i;
         float max = hp[0];
+        // Find maximum value in hp
         for (i = 1; i < npix; i ++)
             if (hp[i] > max)
                 max = hp[i];
+        // Rescale all values to range [0, 255]
         for (i = 0; i < npix; i ++)
             pix[i] = hp[i] / max * 65535;
     }
@@ -394,8 +402,8 @@ int main(int argc, char **argv)
 
         // Rotation model.
         mat4 model;
-        model = rotate(model, 0.5f*mousex, vec3(0.0f, 0.0f, 1.0f));
-        model = rotate(model, -0.5f*mousey, vec3(0.0f, 1.0f, 0.0f));
+        model = rotate(model, 0.01f*mousex, vec3(0.0f, 0.0f, 1.0f));
+        model = rotate(model, -0.01f*mousey, vec3(0.0f, 1.0f, 0.0f));
 
         mat4 proj = perspective(45.0f, (float)width/height, 1.0f, 10.0f);
         glViewport(0, 0, width, height);
