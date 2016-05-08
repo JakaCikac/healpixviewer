@@ -263,7 +263,7 @@ int main(int argc, char **argv)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, nside, nside, 0, GL_RED,
-                GL_UNSIGNED_SHORT, pix + nside * nside * ibase);
+                GL_UNSIGNED_SHORT, pix + nside * nside * ibase); // pix + offset to start of data for given texture
         }
     
         /* Load texture for color map, make active in slot 1 */
@@ -405,18 +405,29 @@ int main(int argc, char **argv)
         model = rotate(model, 0.01f*mousex, vec3(0.0f, 0.0f, 1.0f));
         model = rotate(model, -0.01f*mousey, vec3(0.0f, 1.0f, 0.0f));
 
+        // Perpective stays constant over time.
         mat4 proj = perspective(45.0f, (float)width/height, 1.0f, 10.0f);
+
         glViewport(0, 0, width, height);
+
+        // Generate model view.
         glUniformMatrix4fv(model_uniform, 1, GL_FALSE, value_ptr(model));
+        // Generate perspective.
         glUniformMatrix4fv(proj_uniform, 1, GL_FALSE, value_ptr(proj));
+
+        // Define the camera matrix. Changes with zoom in and zoom out.
         mat4 view = lookAt(
             vec3(3.0f + 0.01f*scrolly, 0.0f, 0.0f),
             vec3(0.0f, 0.0f, 0.0f),
             vec3(0.0f, 0.0f, 1.0f)
         );
+
+        // Generate camera view.
         glUniformMatrix4fv(view_uniform, 1, GL_FALSE, value_ptr(view));
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // Draw textures.
         unsigned char iface;
         for (iface = 0; iface < 12; iface ++)
         {
@@ -424,6 +435,8 @@ int main(int argc, char **argv)
             glBindTexture(GL_TEXTURE_2D, textures[iface]);
             glDrawElements(GL_TRIANGLES, ndiv*ndiv*3*2, GL_UNSIGNED_SHORT, 0);
         }
+
+        // Cleanup.
         glFlush();
         glfwSwapBuffers(window);
         glfwWaitEvents();
