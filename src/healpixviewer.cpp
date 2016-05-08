@@ -117,71 +117,7 @@ float * convert2LOG(float *hp, hpint64 npix) {
 
 }
 
-
-int main(int argc, char **argv)
-{
-    // Initialise filename string.
-    string fitsfilename{ };
-    // Determines if the map is displayed in linear or logarithmic scale.
-    bool logarithmic_scale{false};
-
-    /* Validate input */
-    if (argc < 2)
-    {
-        // basic usage
-        cout << "Usage: healpixviewer INPUT.fits[.gz] [optional]" << endl;
-        // optional parameters
-        cout << "Optional parameters: " << endl;
-        cout << "   --l  Enable logarithimic scale map display." << endl;
-
-        exit(1);
-
-    } else {
-
-        // Read in the filename. (The map).
-        fitsfilename = argv[1];
-
-        if (argc > 2) // if there are optional parameters
-
-            for (int i = 3; i <= argc; i++) {
-
-                // Check for optional parameters.
-                if (string(argv[i-1]) == "--l") {
-                    // We know the next argument *should* be the filename:
-                    logarithmic_scale = true;
-
-                } else if (string(argv[i-1]) == "-d") {
-                    // Do nothing yet.
-                } else {
-                    cout << "Not enough or invalid arguments, please try again.\n";
-                    exit(1);
-
-                }
-            }
-    }
-
-    long nside;
-    char coordsys[80];
-    char ordering[80];
-
-    /* Read sky map from FITS file */
-    float *hp = read_healpix_map(
-        fitsfilename.c_str(), &nside, coordsys, ordering);
-    if (!hp)
-    {
-        fputs("error: read_healpix_map\n", stderr);
-        exit(EXIT_FAILURE);
-    }
-
-    /* Determine total number of pixels */
-    hpint64 npix = nside2npix64(nside);
-
-    /* Convert to NEST ordering if necessary */
-    hp = convert2NEST(hp, ordering[0], npix, nside);
-
-    /* Convert to Logarithmic scale data if given --l option. */
-    if (logarithmic_scale)
-        hp = convert2LOG(hp, npix);
+void rearrangeBaseTiles(float * hp, long nside) {
 
     /* Rearrange into base tiles */
     {
@@ -204,13 +140,10 @@ int main(int argc, char **argv)
         free(tile);
     }
 
-    /* Rescale to range [0, 255] */
-    GLushort *pix = (GLushort *) malloc(npix * sizeof(GLushort));
-    if (!pix)
-    {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
+}
+
+GLushort * rescale(float * hp, GLushort *pix, hpint64 npix) {
+
     {
         hpint64 i;
         float max = hp[0];
@@ -224,6 +157,12 @@ int main(int argc, char **argv)
     }
     free(hp);
 
+    return pix;
+
+}
+
+void prepareContext() {
+
     /* Initialize window system */
     glfwSetErrorCallback(error);
     if (!glfwInit())
@@ -236,11 +175,98 @@ int main(int argc, char **argv)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 1);
     glfwWindowHint(GLFW_SAMPLES, 4);    /* 4x antialiasing */
 
+}
+
+
+int main(int argc, char **argv)
+{
+    // Initialise filename string.
+    string fitsfilename{ };
+    // Determines if the map is displayed in linear or logarithmic scale.
+    bool logarithmic_scale{false};
+
+    /* Validate input */
+    if (argc < 2)
+    {
+        // basic usage
+        cout << "Usage: healpixviewer INPUT.fits[.gz] [optional]" << endl;
+        // optional parameters
+        cout << "Optional parameters: " << endl;
+        cout << "   --l  Enable logarithimic scale map display." << endl;
+
+        exit(EXIT_FAILURE);
+
+    } else {
+
+        // Read in the filename. (The map).
+        fitsfilename = argv[1];
+
+        if (argc > 2) // if there are optional parameters
+
+            for (int i = 3; i <= argc; i++) {
+
+                // Check for optional parameters.
+                if (string(argv[i-1]) == "--l") {
+                    // We know the next argument *should* be the filename:
+                    logarithmic_scale = true;
+
+                } else if (string(argv[i-1]) == "-d") {
+                    // Do nothing yet.
+                } else {
+                    cout << "Not enough or invalid arguments, please try again.\n";
+                    exit(EXIT_FAILURE);
+
+                }
+            }
+    }
+
+    long nside;
+    char coordsys[80];
+    char ordering[80];
+
+    /* Read sky map from FITS file */
+    float *hp = read_healpix_map(
+        fitsfilename.c_str(), &nside, coordsys, ordering);
+    if (!hp)
+    {
+        cerr << "Error: read_healpix_map." <<  endl;
+        exit(EXIT_FAILURE);
+    }
+
+    /* Determine total number of pixels */
+    hpint64 npix = nside2npix64(nside);
+
+    /* Convert to NEST ordering if necessary */
+    hp = convert2NEST(hp, ordering[0], npix, nside);
+
+    /* Convert to Logarithmic scale data if given --l option. */
+    if (logarithmic_scale)
+        hp = convert2LOG(hp, npix);
+
+    /* Rearrange data base tiles. */
+    rearrangeBaseTiles(hp, nside);
+
+    /* Rescale to range [0, 255] */
+    GLushort *pix = (GLushort *) malloc(npix * sizeof(GLushort));
+    if (!pix)
+    {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+
+    } else {
+
+        pix = rescale(hp, pix, npix);
+
+    }
+
+    // Init GLFW - openGL window and context.
+    prepareContext();
+
     GLFWwindow *window = glfwCreateWindow(1024, 768, "HEALPix Viewer", NULL, NULL);
     if ( window == NULL )
     {
         // Log error message.
-        std::cerr << "Failed to open GLFW window." << std::endl;
+        cerr << "Failed to open GLFW window." << endl;
         // Terminate GLFW and exit.
         glfwTerminate();
         exit(EXIT_FAILURE);
@@ -265,7 +291,7 @@ int main(int argc, char **argv)
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, nside, nside, 0, GL_RED,
                 GL_UNSIGNED_SHORT, pix + nside * nside * ibase); // pix + offset to start of data for given texture
         }
-    
+
         /* Load texture for color map, make active in slot 1 */
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_1D, textures[ibase]);
