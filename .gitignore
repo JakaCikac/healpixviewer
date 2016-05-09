@@ -60,5 +60,14 @@ Temporary Items
 # build directory
 build/
 
+# java and netbeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+.nb-gradle/
+
 # wtf
 .dSYM/
