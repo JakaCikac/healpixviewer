@@ -117,6 +117,50 @@ float * convert2LOG(float *hp, hpint64 npix) {
 
 }
 
+float getMaxValue(float *hp, hpint64 npix) {
+
+    float max = 0;
+    for (int i = 0; i < npix; i++) {
+        if (hp[i] > max)
+            max = hp[i];
+    }
+
+    return max;
+
+}
+
+float getMinValue(float *hp, hpint64 npix) {
+
+    float min = MAXFLOAT;
+    for (int i = 0; i < npix; i++) {
+        if (hp[i] < min)
+            min = hp[i];
+    }
+
+    return min;
+
+}
+
+float * limitValues(float *hp, hpint64 npix, float min, float max) {
+
+    float *limit_hp = (float *) malloc(npix * sizeof(*limit_hp));
+
+    for (int i = 0; i < npix; i++) {
+        if (hp[i] < min)
+            limit_hp[i] = min;
+        else if (hp[i] > max)
+            limit_hp[i] = max;
+        else
+            limit_hp[i] = hp[i];
+    }
+
+    free(hp);
+    hp = limit_hp;
+
+    return hp;
+
+}
+
 void rearrangeBaseTiles(float * hp, long nside) {
 
     /* Rearrange into base tiles */
@@ -185,6 +229,11 @@ int main(int argc, char **argv)
     // Determines if the map is displayed in linear or logarithmic scale.
     bool logarithmic_scale{false};
 
+    float min_value{0.0};
+    float max_value{0.0};
+    bool set_min_value{false};
+    bool set_max_value{false};
+
     /* Validate input */
     if (argc < 2)
     {
@@ -192,7 +241,9 @@ int main(int argc, char **argv)
         cout << "Usage: healpixviewer INPUT.fits[.gz] [optional]" << endl;
         // optional parameters
         cout << "Optional parameters: " << endl;
-        cout << "   --l  Enable logarithimic scale map display." << endl;
+        cout << "   --l           Enable logarithimic scale map display." << endl;
+        cout << "   -min [value]  Set the minimum displayable value of input map." << endl;
+        cout << "   -max [value]  Set the maximum displayable value of input map." << endl;
 
         exit(EXIT_FAILURE);
 
@@ -210,9 +261,43 @@ int main(int argc, char **argv)
                     // We know the next argument *should* be the filename:
                     logarithmic_scale = true;
 
-                } else if (string(argv[i-1]) == "-d") {
-                    // Do nothing yet.
+                } else if (string(argv[i-1]) == "-min") {
+
+                    // check if there is another argument (float)
+                    if (argc > i) {
+                        // set flag for minimum value call
+                        set_min_value = true;
+                        // get another argument and increase counter by 1
+                        min_value = stof(argv[i]);
+
+                        i++;
+
+                    } else {
+
+                        cout << "Not enough or invalid arguments, please try again.\n";
+                        exit(EXIT_FAILURE);
+                    }
+
+                }  else if (string(argv[i-1]) == "-max") {
+
+                    // check if there is another argument (float)
+                    if (argc > i) {
+                        // set flag for minimum value call
+                        set_max_value = true;
+                        // get another argument and increase counter by 1
+                        max_value = stof(argv[i]);
+
+                        i++;
+
+                    } else {
+
+                        cout << "Not enough or invalid arguments, please try again.\n";
+                        exit(EXIT_FAILURE);
+
+                    }
+
                 } else {
+
                     cout << "Not enough or invalid arguments, please try again.\n";
                     exit(EXIT_FAILURE);
 
@@ -238,6 +323,22 @@ int main(int argc, char **argv)
 
     /* Convert to NEST ordering if necessary */
     hp = convert2NEST(hp, ordering[0], npix, nside);
+
+    /* print out min and max values */
+    float max = getMaxValue(hp, npix);
+    float min = getMinValue(hp, npix);
+
+    // Check if set values make sense:
+    if (set_min_value && min_value < min) { min_value = min; }
+    if (set_max_value && max_value > max) { max_value = max; }
+
+    /* Limit values if any of the limits have been set. */
+    if (set_min_value && !set_max_value)
+        hp = limitValues(hp, npix, min_value, max);
+    else if (!set_min_value && set_max_value)
+        hp = limitValues(hp, npix, min, max_value);
+    else if (set_min_value && set_max_value)
+        hp = limitValues(hp, npix, min_value, max_value);
 
     /* Convert to Logarithmic scale data if given --l option. */
     if (logarithmic_scale)

@@ -54,6 +54,7 @@ public class Heal extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,17 +65,17 @@ public class Heal extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(85, 85, 85)
                 .addComponent(jLabel1)
-                .addGap(83, 83, 83))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(29, 29, 29)
                 .addComponent(jLabel1)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jToggleButton1.setText("Logarithmic Scale");
@@ -98,38 +99,50 @@ public class Heal extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(0, 204, 0));
         jLabel4.setText("jLabel4");
 
+        jLabel5.setText("Enable / Disable:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(110, 110, 110)
+                .addComponent(jToggleButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(125, 125, 125)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToggleButton1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 27, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(89, 89, 89)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)))
-                .addContainerGap(70, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel3))
+                .addGap(151, 151, 151))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jButton1))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 332, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton1)
-                .addGap(46, 46, 46))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -144,7 +157,8 @@ public class Heal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -167,9 +181,6 @@ public class Heal extends javax.swing.JFrame {
      * Get current working directory, to get the path to the default map. 
      */
     private static void setDefaultPaths() {
-    
-        //System.out.println("Working Directory = " +
-        //      System.getProperty("user.dir"));
         
         // Set the program path.
         programPath = System.getProperty("user.dir") + "/exec/healpixviewer";
@@ -177,21 +188,18 @@ public class Heal extends javax.swing.JFrame {
         // Set the default map path.
         mapPath = System.getProperty("user.dir") + "/data/COM_CompMap_dust-commander_0256_R2.00.fits";
         
-        System.out.println(programPath);
-        System.out.println(mapPath);
     }
     
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         
-        System.out.println(System.getProperty("user.dir"));
-        jLabel4.setText(System.getProperty("user.dir"));
         process.destroy();
         if (!logarithmic) {
             command = programPath + " " + mapPath + " " + "--l";
-            command = "/Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/build/healpixviewer /Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/data/map2/COM_CompMap_dust-commander_0256_R2.00.fits --l";
+            //command = "/Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/build/healpixviewer /Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/data/map2/COM_CompMap_dust-commander_0256_R2.00.fits --l";
             logarithmic = true;
         } else {
-            command = "/Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/build/healpixviewer /Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/data/map2/COM_CompMap_dust-commander_0256_R2.00.fits";
+            command = programPath + " " + mapPath;
+            //command = "/Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/build/healpixviewer /Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/data/map2/COM_CompMap_dust-commander_0256_R2.00.fits";
             logarithmic = false; 
         } 
             
@@ -212,6 +220,16 @@ public class Heal extends javax.swing.JFrame {
             File file = jFileChooser1.getSelectedFile();
             mapPath = file.toString();
             mapName = file.getName();
+            
+            jLabel4.setText(mapName);
+            
+            // Reset logarithmic display.
+            logarithmic = false;
+            jToggleButton1.setSelected(false);
+            
+            command = programPath + " " + mapPath;
+            process.destroy();
+            runCommand();
             
         } else {
             // In this case just leave the default map open!
@@ -267,8 +285,9 @@ public class Heal extends javax.swing.JFrame {
             
             // Set default map path.
             // Set the program path (executable Healpix Viewer)
-            setDefaultPaths();
+            //setDefaultPaths();
             
+            programPath = "/Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/build/healpixviewer";
 
 
             // Set the default command.
@@ -292,6 +311,7 @@ public class Heal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JToggleButton jToggleButton1;
