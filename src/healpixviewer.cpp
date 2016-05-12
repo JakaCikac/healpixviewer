@@ -332,6 +332,9 @@ int main(int argc, char **argv)
     if (set_min_value && min_value < min) { min_value = min; }
     if (set_max_value && max_value > max) { max_value = max; }
 
+    cout << min << endl;
+    cout << max << endl;
+
     /* Limit values if any of the limits have been set. */
     if (set_min_value && !set_max_value)
         hp = limitValues(hp, npix, min_value, max);
