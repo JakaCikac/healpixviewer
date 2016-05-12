@@ -408,13 +408,7 @@ public class Heal extends javax.swing.JFrame {
             // Set the program path (executable Healpix Viewer)
             setDefaultPaths();
             
-            programPath = "/Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/build/healpixviewer";
-            mapPath = "/Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/data/map2/COM_CompMap_dust-commander_0256_R2.00.fits";
-            //mapName = "COM_CompMap_dust-commander_0256_R2.00.fits";
-            
-            // Set the default command.
-            command = "/Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/build/healpixviewer /Users/natrixanorax/Dropbox/FRI/PODIPLOMSKI/OO/Project1/healpixviewer/data/map2/COM_CompMap_dust-commander_0256_R2.00.fits";
-            
+            command = programPath + " " + mapPath;
                     
             // Run the default command and open the Healpix Viewer!
             runCommand();
